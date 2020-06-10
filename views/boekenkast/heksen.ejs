@@ -6,9 +6,9 @@
     <div id="accordion" class="container">
         
         <!--for each audio file in the array, make a panel:-->
-        <% for (i=1; i < 13; i++) { %>
+
+        <!-- <% for (i=1; i < 13; i++) { %>
             <div class="panel">
-                <!--checken of het audio file in the array of the user staat, dan deze panel als active laten zijn, else niet -->
                 <div class="acc-header"> <%= i %> </div>
                 <div class="acc-body">
                     <audio class="js-player">
@@ -17,16 +17,40 @@
                     </audio>
                 </div>
             </div>
-        <% } %>
-        <div class="panel">
-            <!--checken of het audio file in the array of the user staat, dan deze panel als active laten zijn, else niet -->
-            <div class="acc-header"> test </div>
+        <% } %> -->
+        <!-- <div class="panel">
+            <div class="acc-header">5</div>
             <div class="acc-body">
                 <audio class="js-player">
-                    <source src="/audio/8.mp3"/>
+                    <source src="/audio/5"/>
                 </audio>
             </div>
         </div>
+        <div class="panel">
+            <div class="acc-header">7</div>
+            <div class="acc-body">
+                <audio class="js-player">
+                    <source src="/audio/7"/>
+                </audio>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="acc-header">9</div>
+            <div class="acc-body">
+                <audio class="js-player">
+                    <source src="/audio/9"/>
+                </audio>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="acc-header">11</div>
+            <div class="acc-body">
+                <audio class="js-player">
+                    <source src="/audio/11"/>
+                </audio>
+            </div>
+        </div> -->
+
     
     </div>
 </div>
@@ -37,6 +61,17 @@
 
 <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
 <script>
+
+    function createPanels(accordion){
+        for (i=1; i < 13; i++) {
+            accordion.innerHTML += `<div class="panel"><div class="acc-header">${i}</div><div class="acc-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nulla ligula. Integer eleifend tortor lorem, eu mollis metus iaculis sed. Sed dui ligula, interdum eu turpis at, consectetur tincidunt lacus. Sed nec egestas lorem. Praesent mattis augue sit amet est aliquam tempus. Proin in metus semper, hendrerit sem ac, rhoncus est. Nunc interdum sit amet massa viverra hendrerit. Nullam sit amet ipsum dolor. Duis mattis mi eu pellentesque placerat.</p><audio class="js-player"><source src="defaultsource"></audio></div></div>`
+        }
+    }
+
+    //call function
+    createPanels(accordion);
+
+    //add event lisnteners for creation of plyr audio
        document.addEventListener('DOMContentLoaded', () => {
            const controls = [
                'rewind',
@@ -51,28 +86,21 @@
            ]
            const player = Plyr.setup('.js-player', { controls });
        });
+    
+    //call the function so it is in use
+    
+
+    // function addAudioSource() {
+    //     console.log("change audio");
+    // }
+
+    // const.
+    // let expandedPanel = document.getElementsByClassName(".active");
+    // console.log(expandedPanel);
+
+
+    // addAudioSource(expandedPanel);
+
 </script>
-
-<!-- <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
-<script>
-  const player = new Plyr('#player');
-
-  player.source = {
-  type: 'audio',
-  title: 'Example title',
-  sources: [
-    {
-      src: '/../../audio/Heksen1-1of6.mp3'
-      type: 'audio/mp3',
-    },
-    {
-      src: '/../../audio/Heksen1-2of6.mp3',
-      type: 'audio/mp3',
-    },
-  ],
-};
-
-</script>  -->
-
 
 <%- include ("../partials/footer") %>

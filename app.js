@@ -113,13 +113,16 @@ app.use("/boekenkast", boekenkastRoutes);
 
 //ROUTE FOR RETRIEVING AUDIO FROM DATABASE
 app.get("/audio/:i", function (req, res) {
-    console.log(req.params.i);
-    const filename = "public/audio/" + req.params.i + ".mp3"
+    console.log(req.params); //gives { i: '5' }
+    const filename = req.params.i + ".mp3";
+    console.log(filename); //gives public/audio/5.mp3
 
     //opens the gfs as a readable stream
     const readstream = gfs.createReadStream({filename: filename})
+    //console.log(readstream);
     readstream.on('error', function (error) {
-         res.sendStatus(500);
+        console.log(error);
+        res.sendStatus(500);
     })
 
     // This will wait until we know the readable stream is actually valid before piping
