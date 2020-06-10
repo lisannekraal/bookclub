@@ -26,10 +26,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 
     //create and set database:
 //is we are in production, run the databaseurl set as an environment variable, otherwise, use localhost url
-//const url = "mongodb+srv://Lisan:Kraal@cluster0-vyl2z.mongodb.net/heksen?retryWrites=true&w=majority"
-const url = "mongodb://localhost/heksen";
-//change url into process.env.DATABASEURL when we have Heroku running
-//const url = process.env.DATABASEURL || "mongodb://localhost/heksen";
+const url = process.env.DATABASEURL || "mongodb://localhost/heksen";
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
 
     //make sure we can use the public folder for linked stylesheet and js:
