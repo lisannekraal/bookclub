@@ -1,0 +1,23 @@
+<%- include ("../partials/header") %>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md">
+            <h1>Boekenkast</h1>
+            <ul>
+                <li><a href="/boekenkast/heksen"><h2>Heksen</h2></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md">
+            <form action="/wishlist" method="POST">
+                <p>Welk boek wil jij graag voorgelezen krijgen?</p> 
+                <input type="text" name="book" placeholder="boek: titel of auteur of beiden">
+                <button>Verstuur</button>
+                <a href="/wishlist"><button>Zie de huidige wishlist</button></a>
+            </form>
+        </div>
+    </div>
+</div>
+<%- include ("../partials/footer") %>

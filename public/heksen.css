@@ -1,0 +1,83 @@
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    padding-top: 100px;
+    padding: 100px 1.5em 0 1.5em;
+    text-align: center;
+}
+
+#accordion {
+    max-width: 500px;
+}
+
+/** This class will hide all the body of accordion by default **/
+#accordion .acc-body{
+    display : none;
+}
+
+/** This class will show the body if it has "active" parent class. "active" class will be added to panel div **/
+#accordion .active .acc-body {
+    display : block;
+}
+
+#accordion .panel{
+    color: white;
+    background-color: rgba(0, 0, 0, 0.562);
+    border : solid 1px #D6D6D6;
+    margin:5px;
+    padding : 5px;
+    border-radius : 2px;
+}
+
+#accordion .panel:hover{
+    border: 1px solid black;
+}
+
+#accordion .panel .acc-header:hover {
+    position: relative;
+    top: -1px; /* this will raise the element */
+    font-weight: 700;
+}
+
+figure {
+    margin: 0;
+    width: fit-content;
+    padding-bottom: 10px;
+}
+
+figcaption {
+    font-weight: 700;
+    padding-left: 20%;
+}
+
+#deleteButton {
+    display: inline;
+}
+
+li {
+    list-style: none;
+}
+
+.wishlist li {
+    background: rgb(240, 225, 160);
+    height: 42px;
+    line-height: 40px;
+    color: #666;
+}
+
+.wishlist li:nth-child(2n){
+    background-color: #f7f7f7;
+}
+
+.wishlist button {
+    border: none;
+    background-color: coral;
+    transition: 0.3s linear;
+    opacity: 0;
+    cursor: pointer;
+    width: 0;
+}
+
+.wishlist li:hover button {
+    width: 40px;
+    opacity: 1.0;
+}

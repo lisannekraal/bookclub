@@ -1,0 +1,53 @@
+
+
+
+
+
+WISHLIST V1
+
+>> refactoring van routes n.a.v. bootcamp yelpcamp
+
+>> zorgen dat je current user ziet (onderdeel van sessie) 
+
+>> destroy and update routes toevoegen? > Alleen voor wishlist
+
+>> zorgen dat je na inloggen een pop-upje (flash) krijgt met 'ingelogd'
+
+>> nu nog dat je ook echt de naam krijg in successFlash
+
+>> foutmeldingen ook als flash krijgen (registreer eerst)
+
+>> submission wishlist book by user instead of default user
+
+>> hover>slide trashbin maken van lijst zoals in js30 (scratchpad 6)
+
+
+
+WISHLIST V2
+
+>> autorization toevoegen naast authentication... 
+    >> write function checkWishOwnership voor post requests
+    >> gebruik het voor destroy route
+    >> prullenbakje alleen te zien door de user die het gemaakt heeft
+
+>> uitloggen knop werkt niet
+
+- onthouden waar met audio
+  - start met simpele lijst plyers in een script
+  - verander structuur naar één audiobestand per harmonica-stuk
+  - nieuwe variabele bij een user die het nummer van het audiobestand opslaat in een array + de tijd
+  - proberen met die twee variablen voor elkaar te krijgen dat de harmonica op de juiste plek 'opent'
+  - zorgen dat de database onthoudt aan einde van sessie
+    - misschien als je de pagina wilt verlaten: are you sure to leave this page?
+
+- toevoegen seedDB() met een vaste opzet?
+
+- binge-functie > als audio bestand af is, volgende starten
+
+- comments toevoegen per track en de tracks dus ook anders weergeven
+  - met een plaatje of andere content
+  - met comments van users + commentownership
+
+- 
+
+  

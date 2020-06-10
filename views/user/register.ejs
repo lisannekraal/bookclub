@@ -1,0 +1,21 @@
+<%- include ("../partials/header") %>
+
+<div class=container>
+    <h1>You've been invited</h1>
+
+    <form action="/register" method="POST">
+        <p>Kies zelf je username en wachtwoord - wel onthouden, hè?</p>
+        <div>
+            <input type="text" name="username" placeholder="username">
+            <input type="password" name="password" placeholder="wachtwoord">
+            <button>Registreer</button>  
+        </div>
+    </form>
+    <p>
+        Je hebt deze link gekregen maar... 
+        <a href="/about"><button>Wat is De Voorlees Club?</button></a>
+    </p>
+</div>
+
+
+<%- include ("../partials/footer") %>

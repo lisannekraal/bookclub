@@ -1,0 +1,37 @@
+<%- include ("../partials/header") %>
+
+<div class="container">
+            <h1>Wishlist</h1>
+            <p>Welk boek wil jij graag voorgelezen hebben?</p>
+            <ul class="wishlist">
+                <% wishlist.forEach(function(wish){ %>
+                    <li>
+                        <%=wish.description%> - <%=wish.madeby.username%>
+
+
+                        <!--check if some is logged in and authorized by checking 'is there a current user' and 'is currentuser the same as author of this campground?'-->
+                        <!--TRUE/FALSE (logged in but not authorized) will be FALSE, no buttons-->
+                        <!--TRUE/TRUE (logged in and authorized will show buttons -->
+                        <!--FALSE/FALSE (no one there, not logged in) will not show-->
+                        <!--only showing the first of the if-statment will result in error if there is not currentuser. This works because the second part wont be even executed-->
+
+                        <% if(currentUser && wish.madeby.id.equals(currentUser._id)){ %>
+                            <form id="deleteButton" action="/wishlist/<%= wish._id %>?_method=DELETE" method="POST">
+                                <button type="submit">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        <% } %>
+
+                    </li>
+                <% }); %>
+            </ul>
+            <button>
+                <i class="fas fa-plus-square"></i>
+            </button>
+</div>
+
+
+
+
+<%- include ("../partials/footer") %>

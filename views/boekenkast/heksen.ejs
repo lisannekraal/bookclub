@@ -1,0 +1,78 @@
+<%- include ("../partials/header") %>
+    
+<div class=container>
+    <h1>Heksen</h1>
+
+    <div id="accordion" class="container">
+        
+        <!--for each audio file in the array, make a panel:-->
+        <% for (i=1; i < 13; i++) { %>
+            <div class="panel">
+                <!--checken of het audio file in the array of the user staat, dan deze panel als active laten zijn, else niet -->
+                <div class="acc-header"> <%= i %> </div>
+                <div class="acc-body">
+                    <audio class="js-player">
+                        <% source = "/audio/" + i %>
+                        <source src=" <%= source %> "/>
+                    </audio>
+                </div>
+            </div>
+        <% } %>
+        <div class="panel">
+            <!--checken of het audio file in the array of the user staat, dan deze panel als active laten zijn, else niet -->
+            <div class="acc-header"> test </div>
+            <div class="acc-body">
+                <audio class="js-player">
+                    <source src="/audio/8.mp3"/>
+                </audio>
+            </div>
+        </div>
+    
+    </div>
+</div>
+
+<!--now, audio files are manually on the page. Future improvement: creating them while looping over the contents of the folder?-->
+<!--tip van Tom voor meer controle over de player: https://plyr.io/#audio https://www.npmjs.com/package/plyr -->
+
+
+<script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
+<script>
+       document.addEventListener('DOMContentLoaded', () => {
+           const controls = [
+               'rewind',
+               'play',
+               'fast-forward',
+               'progress',
+               'current-time',
+               'duration',
+               'settings',
+               'download',
+               'volume'
+           ]
+           const player = Plyr.setup('.js-player', { controls });
+       });
+</script>
+
+<!-- <script src="https://cdn.plyr.io/3.6.2/plyr.js"></script>
+<script>
+  const player = new Plyr('#player');
+
+  player.source = {
+  type: 'audio',
+  title: 'Example title',
+  sources: [
+    {
+      src: '/../../audio/Heksen1-1of6.mp3'
+      type: 'audio/mp3',
+    },
+    {
+      src: '/../../audio/Heksen1-2of6.mp3',
+      type: 'audio/mp3',
+    },
+  ],
+};
+
+</script>  -->
+
+
+<%- include ("../partials/footer") %>
