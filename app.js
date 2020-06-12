@@ -11,7 +11,8 @@ const express = require('express'),
 
     //requiring for database and user authentication
 const Wish = require("./models/wish"), 
-      User = require("./models/user"), 
+      User = require("./models/user"),
+      Book = require("./models/book"), 
       passport = require("passport"), 
       LocalStrategy = require("passport-local"),
       Grid = require("gridfs-stream");
@@ -26,8 +27,123 @@ app.use(bodyParser.urlencoded({extended: true}));
 
     //create and set database:
 //is we are in production, run the databaseurl set as an environment variable, otherwise, use localhost url
-const url = process.env.DATABASEURL || "mongodb://localhost/heksen";
+const url = "mongodb+srv://Lisan:Kraal@cluster0-vyl2z.mongodb.net/heksen?retryWrites=true&w=majority";
+//const url = process.env.DATABASEURL || "mongodb://localhost/heksen";
 mongoose.connect(url, {useNewUrlParser: true, useUnifiedTopology: true});
+
+
+
+// var heksen = new Book({
+//     title: "Heksen: Eerherstel voor de vrouwelijke rebel",
+//     tracks: [{
+//         title: "Inleiding: de erfgenamen",
+//         filename: "1.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d034804cd838163bda61",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Vrouwenhoofden die boven het maaiveld worden afgehakt",
+//         filename: "2.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d03b7ad9cda6c42dea86",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Een ontkende of onwerkelijke geschiedenis",
+//         filename: "3.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d040a5ee98594fdfcf8a",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Van de tovernaar van Oz naar StarHawk",
+//         filename: "4.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d045abd391b319117f79",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "De bezoekster in de schemering",
+//         filename: "5.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d04ad77e4311f3b49444",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Moeten we het hart van de zeeman van hydra verslinden?",
+//         filename: "6.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d04ffcf8f9f3ebba8f95",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Hoofstuk 1: Een eigen leven; De plaag van de vrouwelijke onafhankelijkheid",
+//         filename: "7.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d0530a3485f8621b79c6",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "De avonturierster, een verboden voorbeeld",
+//         filename: "8.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d05823d4921429026235",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Weg met de rebellen!",
+//         filename: "9.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d05df4429ace404a3370",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Wie is de duivel?",
+//         filename: "10.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d068b18133c7c2c5a343",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "De reflex van dienstbaarheid",
+//         filename: "11.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d06ea6446a5241be52c1",
+//             "$db" : "heksen"
+//         }}},
+//         { title: "Het 'instituut moederschap', een blok aan het been",
+//         filename: "12.mp3",
+//         trackRef: {
+//             id: {
+//             "$ref" : "fs.files",
+//             "$id" : "5ee0d073fe6ff2b48d41e978",
+//             "$db" : "heksen"
+//         }}},
+//         ]
+// });
+
+// heksen.save(function(err, book){
+//     if(err){
+//         console.log("error during saving");
+//     } else {
+//         console.log("successfully saved heksen");
+//         console.log(book);
+//     }
+// });
+
 
     //make sure we can use the public folder for linked stylesheet and js:
 app.use(express.static("public"));
