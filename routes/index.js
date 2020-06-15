@@ -1,7 +1,24 @@
 const express = require('express'),
       router = express.Router(),
       passport = require("passport"),
-      User = require("../models/user");
+      User = require("../models/user"),
+      Book = require("../models/book"),
+      mongoose = require("mongoose");
+
+const trackSchema = new mongoose.Schema({
+        title: String,
+        filename: String, 
+        trackRef: {
+            id: {
+            "$ref" : String,
+            "$id" : {
+                type: mongoose.Schema.Types.ObjectId
+            },
+            "$db" : String
+        }}
+    });
+    
+const Track = mongoose.model('Track', trackSchema);
 
 //root route
 router.get("/", function(req, res){
@@ -42,6 +59,67 @@ router.post("/login", passport.authenticate("local", {
     failureRedirect: "/",
     failureFlash: true
 }), function(req, res){
+    const id = req.user._id;
+    const bookList = req.user.books;
+
+    Book.find(
+        //change this code when we are uploading a new book or new episodes to the application:
+        {"title": "Heksen: Eerherstel voor de vrouwelijke rebel"}, 
+        function(err, currentBook){
+            if(err){
+                console.log(err);
+            } else {
+                const newBookTitle = currentBook[0].title;
+                const newBookTracks = currentBook[0].tracks;
+
+                if(bookList.filter(book => book.title === newBookTitle).length){
+                    console.log("This user has the book already listed in the array");
+                    newBookTracks.forEach(dbtrack => {
+                        User.findById(id, function(err, thisUser){
+                            if(err){
+                                console.log(err);
+                            }else{
+                                const userTracks = thisUser.books[0].tracks || [];
+                                if(userTracks.length > 0){
+                                    if(userTracks.filter(e => e.linkedTrack.equals(dbtrack._id)).length){
+                                        console.log("you see, track already in users object");
+                                    } else {
+                                        newObject = {linkedTrack: dbtrack._id, played: false, time: 0}
+                                        userTracks.push(newObject);
+                                        console.log("new track added to existing array");
+                                    }
+                                } else {
+                                    newObject = {linkedTrack: dbtrack._id, played: false, time: 0}
+                                    userTracks.push(newObject);
+                                    thisUser.books[0].tracks = userTracks;
+                                    console.log("new track added")
+                                }
+                            }
+                        })
+                    });
+                } else {
+                    User.findById(id, function(err, thisUser){
+                        if(err){
+                            console.log(err);
+                        }else{
+                            thisUser.books.push({title: newBookTitle});
+                            newBookTracks.forEach(dbtrack => {
+                                thisUser.books.forEach(book => {
+                                    newObject = {
+                                        linkedTrack: `${dbtrack._id}`,
+                                        played: false,
+                                        time: 0
+                                    }
+                                    book.tracks.push(newObject);
+                                })
+                            });
+                            thisUser.save();
+                            console.log(thisUser);
+                        }
+                    });
+                }
+            }
+    });
     req.flash("success", "Welcome back " + req.body.username);
     res.redirect("/");
 });

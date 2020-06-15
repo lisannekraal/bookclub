@@ -4,11 +4,9 @@ const passportLocalMongoose = require("passport-local-mongoose");
 //trackSchema (just like books but then not the source of audio itself)
 const usersTracksSchema = new mongoose.Schema({
     linkedTrack: {
-        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Track"
-        }
-    },
+        },
     played: {
         type: Boolean,
         default: false

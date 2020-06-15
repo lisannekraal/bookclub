@@ -64,6 +64,7 @@
 
     function createPanels(accordion){
         for (i=1; i < 13; i++) {
+            console.log("innerhtml will be created");
             accordion.innerHTML += `<div class="panel"><div class="acc-header">${i}</div><div class="acc-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nulla ligula. Integer eleifend tortor lorem, eu mollis metus iaculis sed. Sed dui ligula, interdum eu turpis at, consectetur tincidunt lacus. Sed nec egestas lorem. Praesent mattis augue sit amet est aliquam tempus. Proin in metus semper, hendrerit sem ac, rhoncus est. Nunc interdum sit amet massa viverra hendrerit. Nullam sit amet ipsum dolor. Duis mattis mi eu pellentesque placerat.</p><audio class="js-player"><source src="defaultsource"></audio></div></div>`
         }
     }

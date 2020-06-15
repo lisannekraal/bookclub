@@ -11,10 +11,8 @@ function initAccordion(accordionElem){
     function handlePanelClick(event){
         if (event.currentTarget.parentElement.classList.contains("active")) {
             hidePanel(event.currentTarget.parentElement);
-            //HIER TOEVOEGEN AUDIOSOURCE WEER LEEG MAKEN?
         } else {
             showPanel(event.currentTarget.parentElement);
-            //HIER TOEVOEGEN INLADEN AUDIO SOURCE?
         }
     }
   
