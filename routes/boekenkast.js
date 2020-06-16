@@ -1,7 +1,7 @@
 const express = require('express'),
       router = express.Router(),
+      Book = require("../models/book"),
       middleware = require("../middleware");
-
 
 
 //INDEX - boekenkast
@@ -11,10 +11,14 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 
 //SHOW - boekenkast
 router.get("/heksen", middleware.isLoggedIn, function(req, res){
-    res.render("boekenkast/heksen");
+    Book.find({"title": "Heksen: Eerherstel voor de vrouwelijke rebel"}, function(err, thisBook){
+        if(err){
+            console.log(err);
+        } else {
+            res.render("boekenkast/heksen", {bookObject: thisBook});
+        }
+    });
 });
-
-
 
 module.exports = router;
 

@@ -1,29 +1,17 @@
 
-
-
-
-
-WISHLIST V1
+========WISHLIST V1
 
 >> refactoring van routes n.a.v. bootcamp yelpcamp
-
 >> zorgen dat je current user ziet (onderdeel van sessie) 
-
 >> destroy and update routes toevoegen? > Alleen voor wishlist
-
 >> zorgen dat je na inloggen een pop-upje (flash) krijgt met 'ingelogd'
-
 >> nu nog dat je ook echt de naam krijg in successFlash
-
 >> foutmeldingen ook als flash krijgen (registreer eerst)
-
 >> submission wishlist book by user instead of default user
-
 >> hover>slide trashbin maken van lijst zoals in js30 (scratchpad 6)
 
 
-
-WISHLIST V2
+========WISHLIST V2
 
 >> autorization toevoegen naast authentication... 
     >> write function checkWishOwnership voor post requests
@@ -32,13 +20,32 @@ WISHLIST V2
 
 >> uitloggen knop werkt niet
 
-- onthouden waar met audio
-  - start met simpele lijst plyers in een script
-  - verander structuur naar één audiobestand per harmonica-stuk
-  - nieuwe variabele bij een user die het nummer van het audiobestand opslaat in een array + de tijd
-  - proberen met die twee variablen voor elkaar te krijgen dat de harmonica op de juiste plek 'opent'
-  - zorgen dat de database onthoudt aan einde van sessie
-    - misschien als je de pagina wilt verlaten: are you sure to leave this page?
+>> alvast mongoSchema maken voor hoe de user de boeken en audio onthoudt
+
+
+========WISHLIST V3
+
+>> invoegen audio vanuit database
+  >> wat audio files toevoegen aan database met grid https://kb.objectrocket.com/mongo-db/how-to-store-audio-files-in-mongodb-396
+  >> eerste keer referencen naar een audio file uit de database using a grid-link
+  >> start met simpele lijst plyers in een script
+    >> mongofiles (gridFS gebruiken om files aan database te voegen
+  >> verander structuur naar één audiobestand per harmonica-stuk (looping)
+    >> zorgen dat paneel niet dicht gaat als je op play druk
+  >> Audiobestanden toevoegen aan mongo atlas
+
+- Onthouden waar gebleven met audio per user
+  >> nieuw user schema n.a.v. suggesties Tom:
+     >> per user per boek alle tracks en dan allemaal played true or false. Bij deze kan je dus ook de feature toevoegen van 'updates', onafgespeelde nieuwe tracks
+  > zorgen dat db.books tracks heeft die gelinkt zijn aan de eerste 12 audiobestanden
+  > make middleware that checks if the user's list is complete
+  > zorgen dat de app tracks uit db.books toevoegd aan db.user
+  - zorgen dat de database onthoudt waar de user gebleven is
+        GridFS: skip” to the middle of a video or audio file is possible
+  - als nieuwe user inglogt en naar boek gaat: harmonica opent op het juiste paneel
+  - app onthoudt ook waar in de audioplayer de user is gebleven
+
+- na registreren nog een keer vragen in te loggen (want anders update hij de user niet)
 
 - toevoegen seedDB() met een vaste opzet?
 
@@ -48,6 +55,51 @@ WISHLIST V2
   - met een plaatje of andere content
   - met comments van users + commentownership
 
-- 
+- features toevoegen bij Schema (lowercase, required, array) https://mongoosejs.com/docs/schematypes.html
 
+Over de audio app. Ik zou nog graag de volgende features willen toevoegen:
+
+1 onthouden waar gebleven, op een simpele manier: wanneer de user naar het boek gaat slaat de harmonica met panels open op de audioplayer waar hij/zij gebleven was
+2 liefst ook nog starten op de plek waar gebleven was in het audiobestand zelf
+3 per panel een paragraafje van de voorlezer
+4 per 'panel' ruimte voor comments van users over dat specifieke audiobestand
+5 binge functie: als bestand afgelopen is start automatisch de volgende
+6 track anders weergeven als hij afgespeeld is (ander kleurtje o.i.d.) zie whatsapp voice berichten daarbij zie je ook een 'vinkje'
+7 cover van boek (liefst eigen foto, persoonlijk houden)
+8 in de 'boekenkast' de boeken op een leuke manier weergegeven (tiles? of ook echt als een boekenkast)
+9 responsive maken (nu gaat het nog niet helemaal lekker)
+10 de harmonica een stuk duidelijker/intuitiever maken (wat gebeurt er bij hover, hoe weten mensen dat ze op de header moeten klikken, titels van audioplayers)
+
+
+
+Super good post on how to use the reference of fs.files in User Schema:
+https://stackoverflow.com/questions/43897971/handling-file-in-mongodb-with-gridfs
+
+Uileg van deze dude. Je hebt geen ref nodig:
+https://stackoverflow.com/questions/53558684/multer-gridfs-storage-referencing-uploaded-file-to-a-new-collection/53560360#53560360
+
+
+https://stackoverflow.com/questions/55230048/passing-audio-from-mongodb-to-audio-tag
   
+$ addtoset
+https://docs.mongodb.com/manual/reference/operator/update/addToSet/#up._S_addToSet
+https://docs.mongodb.com/realm/mongodb/actions/collection.updateOne/
+Checkout upsert: https://mongoosejs.com/docs/tutorials/findoneandupdate.html
+
+
+dit heeft de user nu:
+[
+  { linkedTrack: 5ee336e5eb0dda38a8679fe5, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fe6, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fe7, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fe8, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fe9, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fea, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679feb, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fec, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fed, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fee, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679fef, played: false, time: 0 },
+  { linkedTrack: 5ee336e5eb0dda38a8679ff0, played: false, time: 0 }
+]
+

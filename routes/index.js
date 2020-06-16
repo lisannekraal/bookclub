@@ -2,23 +2,7 @@ const express = require('express'),
       router = express.Router(),
       passport = require("passport"),
       User = require("../models/user"),
-      Book = require("../models/book"),
-      mongoose = require("mongoose");
-
-const trackSchema = new mongoose.Schema({
-        title: String,
-        filename: String, 
-        trackRef: {
-            id: {
-            "$ref" : String,
-            "$id" : {
-                type: mongoose.Schema.Types.ObjectId
-            },
-            "$db" : String
-        }}
-    });
-    
-const Track = mongoose.model('Track', trackSchema);
+      Book = require("../models/book");
 
 //root route
 router.get("/", function(req, res){
@@ -61,7 +45,6 @@ router.post("/login", passport.authenticate("local", {
 }), function(req, res){
     const id = req.user._id;
     const bookList = req.user.books;
-
     Book.find(
         //change this code when we are uploading a new book or new episodes to the application:
         {"title": "Heksen: Eerherstel voor de vrouwelijke rebel"}, 

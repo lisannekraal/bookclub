@@ -26,9 +26,10 @@ function initAccordion(accordionElem){
        //Show new one
        panel.classList.add("active");
        //set source of audio player
-       var trackNumber = panel.querySelector(".acc-header").innerHTML;
+       var elm = panel.querySelector('div[class~="acc-header"]');
+       var trackNumber = elm.id;
+       console.log(trackNumber);
        panel.querySelector(".js-player").innerHTML = `<source src="/audio/${trackNumber}">`
-       console.log(panel.querySelector(".js-player").innerHTML);
     }
 
     function hidePanel(panel){
@@ -47,3 +48,7 @@ function initAccordion(accordionElem){
 }
 
 initAccordion(accordion);
+
+       //var trackNumber = panel.querySelector(".acc-header").innerHTML; //CHANGE TO QUERYING ABOUT ID:
+       //var elm = document.querySelector('div[class~="one"]');
+        //console.log(elm.id);

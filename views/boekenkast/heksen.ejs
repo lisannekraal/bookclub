@@ -1,106 +1,53 @@
 <%- include ("../partials/header") %>
     
 <div class=container>
-    <h1>Heksen</h1>
-
-    <div id="accordion" class="container">
-        
-        <!--for each audio file in the array, make a panel:-->
-
-        <!-- <% for (i=1; i < 13; i++) { %>
-            <div class="panel">
-                <div class="acc-header"> <%= i %> </div>
-                <div class="acc-body">
-                    <audio class="js-player">
-                        <% source = "/audio/" + i %>
-                        <source src=" <%= source %> "/>
-                    </audio>
-                </div>
-            </div>
-        <% } %> -->
-        <!-- <div class="panel">
-            <div class="acc-header">5</div>
-            <div class="acc-body">
-                <audio class="js-player">
-                    <source src="/audio/5"/>
-                </audio>
-            </div>
-        </div>
-        <div class="panel">
-            <div class="acc-header">7</div>
-            <div class="acc-body">
-                <audio class="js-player">
-                    <source src="/audio/7"/>
-                </audio>
-            </div>
-        </div>
-        <div class="panel">
-            <div class="acc-header">9</div>
-            <div class="acc-body">
-                <audio class="js-player">
-                    <source src="/audio/9"/>
-                </audio>
-            </div>
-        </div>
-        <div class="panel">
-            <div class="acc-header">11</div>
-            <div class="acc-body">
-                <audio class="js-player">
-                    <source src="/audio/11"/>
-                </audio>
-            </div>
-        </div> -->
-
-    
-    </div>
+    <h1><%= bookObject[0].title %></h1>
+    <div id="accordion" class="container"></div>
 </div>
-
-<!--now, audio files are manually on the page. Future improvement: creating them while looping over the contents of the folder?-->
-<!--tip van Tom voor meer controle over de player: https://plyr.io/#audio https://www.npmjs.com/package/plyr -->
 
 
 <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
-<script>
+<script type="text/javascript">
 
-    function createPanels(accordion){
-        for (i=1; i < 13; i++) {
-            console.log("innerhtml will be created");
-            accordion.innerHTML += `<div class="panel"><div class="acc-header">${i}</div><div class="acc-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nulla ligula. Integer eleifend tortor lorem, eu mollis metus iaculis sed. Sed dui ligula, interdum eu turpis at, consectetur tincidunt lacus. Sed nec egestas lorem. Praesent mattis augue sit amet est aliquam tempus. Proin in metus semper, hendrerit sem ac, rhoncus est. Nunc interdum sit amet massa viverra hendrerit. Nullam sit amet ipsum dolor. Duis mattis mi eu pellentesque placerat.</p><audio class="js-player"><source src="defaultsource"></audio></div></div>`
-        }
+//find out which book we're on (object send with route)
+const bookObject = <%- JSON.stringify(bookObject[0]) %>
+//make a list of objects (files of the associated book)
+const fileList = bookObject.tracks;
+let trackTitle;
+let trackNumber;
+
+//function that creates a panel for every source file of the fileList without setting the source
+function createPanels(accordion){
+    for (i=0; i < fileList.length; i++){
+        //show the track's title in the acc-header while creating the panel
+        trackTitle = fileList[i].title;
+        let trackNumberSplitted = fileList[i].filename.split(".");
+        trackNumber = trackNumberSplitted[0];
+        accordion.innerHTML += `<div class="panel"><div class="acc-header" id="${trackNumber}">${trackTitle}</div><div class="acc-body"><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ut nulla ligula. Integer eleifend tortor lorem, eu mollis metus iaculis sed. Sed dui ligula, interdum eu turpis at, consectetur tincidunt lacus. Sed nec egestas lorem. Praesent mattis augue sit amet est aliquam tempus.</p><audio class="js-player"><source src="defaultsource"></audio></div></div>`;
     }
+}
 
-    //call function
-    createPanels(accordion);
+createPanels(accordion);
 
-    //add event lisnteners for creation of plyr audio
-       document.addEventListener('DOMContentLoaded', () => {
-           const controls = [
-               'rewind',
-               'play',
-               'fast-forward',
-               'progress',
-               'current-time',
-               'duration',
-               'settings',
-               'download',
-               'volume'
-           ]
-           const player = Plyr.setup('.js-player', { controls });
-       });
-    
-    //call the function so it is in use
-    
-
-    // function addAudioSource() {
-    //     console.log("change audio");
-    // }
-
-    // const.
-    // let expandedPanel = document.getElementsByClassName(".active");
-    // console.log(expandedPanel);
+//event listeneners for creation of plyr audio players
+document.addEventListener('DOMContentLoaded', () => {
+    const controls = [
+        'rewind',
+        'play',
+        'fast-forward',
+        'progress',
+        'current-time',
+        'duration',
+        'settings',
+        'download',
+        'volume'
+    ]
+    const player = Plyr.setup('.js-player', { controls });
+});
 
 
-    // addAudioSource(expandedPanel);
+
+
 
 </script>
 
