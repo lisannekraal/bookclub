@@ -9,12 +9,28 @@
 <script src="https://cdn.plyr.io/3.5.6/plyr.js"></script>
 <script type="text/javascript">
 
+//accordion
+const accordion = document.getElementById("accordion");
+
 //find out which book we're on (object send with route)
 const bookObject = <%- JSON.stringify(bookObject[0]) %>
+
 //make a list of objects (files of the associated book)
 const fileList = bookObject.tracks;
 let trackTitle;
 let trackNumber;
+
+//current user
+const currentUser = <%- JSON.stringify(currentUser) %>
+let currentUserTracklist;
+currentUser.books.forEach(book => {
+    if (book.title === bookObject.title){
+        currentUserTracklist = book.tracks;
+        console.log(currentUserTracklist);
+    } else {
+        console.log("books don'tmatch")
+    }
+});
 
 //function that creates a panel for every source file of the fileList without setting the source
 function createPanels(accordion){
@@ -45,9 +61,59 @@ document.addEventListener('DOMContentLoaded', () => {
     const player = Plyr.setup('.js-player', { controls });
 });
 
+function initAccordion(accordionElem){
 
+    //for every element in this row, a default panel is created
 
+    //when panel is clicked, handlePanelClick is called.          
+    function handlePanelClick(event){
+        if (event.currentTarget.parentElement.classList.contains("active")) {
+            hidePanel(event.currentTarget.parentElement);
+        } else {
+            showPanel(event.currentTarget.parentElement);
+        }
+    }
+  
+  //show new panel & hide current one    
+    function showPanel(panel){
+      //Hide current one. First time it will be null. 
+       var expandedPanel = accordionElem.querySelector(".active");
+       if (expandedPanel){
+           expandedPanel.classList.remove("active");
+       } 
+       //Show new one
+       panel.classList.add("active");
+       //set source of audio player
+       var elm = panel.querySelector('div[class~="acc-header"]');
+       var trackNumber = elm.id;
+       console.log(trackNumber);
+       panel.querySelector(".js-player").innerHTML = `<source src="/audio/${trackNumber}">`
+    }
 
+    function hidePanel(panel){
+        panel.classList.remove("active");
+        panel.querySelector(".js-player").innerHTML = '<source src="defaultsource">';
+    }
+    
+    //loop over the panels to create event listeners that fire the function
+    var allPanelElems = accordionElem.querySelectorAll(".panel");
+    var allHeaderElems = accordionElem.querySelectorAll(".acc-header");
+    for (var i = 0, len = allHeaderElems.length; i < len; i++){
+        allHeaderElems[i].addEventListener("click", handlePanelClick);
+    }
+    //By Default Show first panel --> No, show the panel of the user
+    //showPanel(allPanelElems[0]);
+    for(i=0; i < currentUserTracklist.length; i++){
+        if(!currentUserTracklist[i].played){
+            //This is false so we play it and stop the loop
+            console.log("This is false so we play it and stop the loop");
+            showPanel(allPanelElems[i]);
+            return;
+        }
+    }
+}
+
+initAccordion(accordion);
 
 </script>
 

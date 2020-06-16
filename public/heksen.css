@@ -6,12 +6,18 @@ body {
 }
 
 #accordion {
-    max-width: 500px;
+    max-width: 700px;
 }
 
 /** This class will hide all the body of accordion by default **/
 #accordion .acc-body{
     display : none;
+}
+
+#accordion .acc-header{
+    font-size: 19px;
+    font-weight: 700;
+    text-transform: lowercase;
 }
 
 /** This class will show the body if it has "active" parent class. "active" class will be added to panel div **/
@@ -29,14 +35,8 @@ body {
 }
 
 #accordion .panel:hover{
-    border: 1px solid black;
-}
-
-#accordion .panel .acc-header:hover {
-    position: relative;
-    top: -1px; /* this will raise the element */
-    font-weight: 700;
-    border: solid 1px black;
+    border: 3px solid black;
+    transition: 0.8s;
 }
 
 figure {

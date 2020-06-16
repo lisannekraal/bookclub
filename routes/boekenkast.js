@@ -11,11 +11,12 @@ router.get("/", middleware.isLoggedIn, function(req, res){
 
 //SHOW - boekenkast
 router.get("/heksen", middleware.isLoggedIn, function(req, res){
+    const user = req.user;
     Book.find({"title": "Heksen: Eerherstel voor de vrouwelijke rebel"}, function(err, thisBook){
         if(err){
             console.log(err);
         } else {
-            res.render("boekenkast/heksen", {bookObject: thisBook});
+            res.render("boekenkast/heksen", {bookObject: thisBook, currentUser: user});
         }
     });
 });
