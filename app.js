@@ -7,7 +7,11 @@ const express = require('express'),
       bodyParser = require("body-parser"),
       mongoose = require('mongoose'),
       methodOverride = require("method-override"),
-      flash = require("connect-flash");
+      flash = require("connect-flash"),
+      cacheManager = require('cache-manager');
+
+var memoryCache = cacheManager.caching({store: 'memory', max: 100, ttl: 10});
+var ttl = 5;
 
     //requiring for database and user authentication
 const Wish = require("./models/wish"), 
@@ -110,28 +114,188 @@ app.use("/boekenkast", boekenkastRoutes);
     //          /logout             GET      So funny that a login is a post request and a logout a get
 
 
-//ROUTE FOR RETRIEVING AUDIO FROM DATABASE
+//===============================================================================
+
+// //TRY OUT CODE OF EXAMPLE
+
+// class FileReadStreams {
+//     constructor() {
+//       this._streams = {};
+//     }
+  
+//     make(file, options = null) {
+//       return options ?
+//         gfs.createReadStream({filename: file}, options)
+//         : gfs.createReadStream({filename: file});
+//     }
+  
+//     get(file) {
+//       return this._streams[file] || this.set(file);
+//     }
+  
+//     set(file) {
+//       return this._streams[file] = this.make(file);
+//     }
+//   }
+//   const readStreams = new FileReadStreams();
+  
+//   // Getting file stats and caching it to avoid disk i/o
+//   function getFileStat(file, callback) {
+//     let cacheKey = ['File', 'stat', file].join(':');
+  
+//     memoryCache.get(cacheKey, function(err, stat) {
+//       if(stat) {
+//         return callback(null, stat);
+//       }
+  
+//       fs.stat(file, function(err, stat) {
+//         if(err) {
+//           return callback(err);
+//         }
+  
+//         memoryCache.set(cacheKey, stat);
+//         callback(null, stat);
+//       });
+//     });
+//   }
+  
+//   // Streaming whole file
+//   function streamFile(file, req, res) {
+//     getFileStat(file, function(err, stat) {
+//       if(err) {
+//         console.error(err);
+//         return res.status(404);
+//       }
+  
+//       let bufferSize = 1024 * 1024;
+//       res.writeHead(200, {
+//         'Cache-Control': 'no-cache, no-store, must-revalidate',
+//         'Pragma': 'no-cache',
+//         'Expires': 0,
+//         'Content-Type': 'audio/mpeg',
+//         'Content-Length': stat.size
+//       });
+//       readStreams.make(file, {bufferSize}).pipe(res);
+//     });
+//   }
+  
+//   // Streaming chunk
+//   function streamFileChunked(file, req, res) {
+//     getFileStat(file, function(err, stat) {
+//       if(err) {
+//         console.error(err);
+//         return res.status(404);
+//       }
+  
+//       let chunkSize = 1024 * 1024;
+//       if(stat.size > chunkSize * 2) {
+//         chunkSize = Math.ceil(stat.size * 0.25);
+//       }
+//       let range = (req.headers.range) ? req.headers.range.replace(/bytes=/, "").split("-") : [];
+  
+//       range[0] = range[0] ? parseInt(range[0], 10) : 0;
+//       range[1] = range[1] ? parseInt(range[1], 10) : range[0] + chunkSize;
+//       if(range[1] > stat.size - 1) {
+//         range[1] = stat.size - 1;
+//       }
+//       range = {start: range[0], end: range[1]};
+  
+//       let stream = readStreams.make(file, range);
+//       res.writeHead(206, {
+//         'Cache-Control': 'no-cache, no-store, must-revalidate',
+//         'Pragma': 'no-cache',
+//         'Expires': 0,
+//         'Content-Type': 'audio/mpeg',
+//         'Accept-Ranges': 'bytes',
+//         'Content-Range': 'bytes ' + range.start + '-' + range.end + '/' + stat.size,
+//         'Content-Length': range.end - range.start + 1,
+//       });
+//       stream.pipe(res);
+//     });
+// }
+
+// app.get("/audio/:i", (req, res) => {
+//     const file = req.params.i + '.mp3';
+//     if(/firefox/i.test(req.headers['user-agent'])) {
+//         return streamFile(file, req, res);
+//     }
+//     streamFileChunked(file, req, res);
+// });
+
+
+//================================================================================
+
+
+// //ROUTE FOR RETRIEVING AUDIO FROM DATABASE
 app.get("/audio/:i", function (req, res) {
     //console.log(req.params); //gives { i: '5' }
     const filename = req.params.i + ".mp3";
-    //console.log(filename); //gives 5.mp3
+    var total = 240260;
+    var range = [0, total, 0];
 
     //opens the gfs as a readable stream
     const readstream = gfs.createReadStream({filename: filename})
     readstream.on('error', function (error) {
         console.log(error);
         res.sendStatus(500);
-    })
+    });
+
+    var header = {
+        'Content-Length': range[1],
+        'Content-Type': 'audio/mpeg',
+        'Access-Control-Allow-Origin': req.headers.origin || "*",
+        'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+        'Access-Control-Allow-Headers': 'POST, GET, OPTIONS',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': 0,
+        'Accept-Ranges': 'bytes',
+        'Content-Range': 'bytes ' + range[0] + '-' + range[1] + '/' + total,
+        'Content-Length': range[2]
+    };
 
     // This will wait until we know the readable stream is actually valid before piping
     readstream.on('open', function () {
-    // This just pipes the read stream to the response object (which goes to the client)
+        //res.setHeader('Accept-Ranges', 'bytes');
+        
+        res.writeHead(206, header);
+        // res.writeHead(200, {
+        //     'Cache-Control': 'no-cache, no-store, must-revalidate',
+        //     'Pragma': 'no-cache',
+        //     'Expires': 0,
+        //     'Content-Type': 'audio/mpeg'
+        // });
+
+        // This just pipes the read stream to the response object (which goes to the client)
         readstream.pipe(res);
     });
+});
 
-    //res.type('*');
-    //readstream.pipe(res);
- });
+
+//================================hieronder is oud
+
+// //ROUTE FOR RETRIEVING AUDIO FROM DATABASE
+// app.get("/audio/:i", function (req, res) {
+//     //console.log(req.params); //gives { i: '5' }
+//     const filename = req.params.i + ".mp3";
+//     //console.log(filename); //gives 5.mp3
+
+//     //opens the gfs as a readable stream
+//     const readstream = gfs.createReadStream({filename: filename})
+//     readstream.on('error', function (error) {
+//         console.log(error);
+//         res.sendStatus(500);
+//     })
+
+//     // This will wait until we know the readable stream is actually valid before piping
+//     readstream.on('open', function () {
+//     // This just pipes the read stream to the response object (which goes to the client)
+//         readstream.pipe(res);
+//     });
+
+//     //res.type('*');
+//     //readstream.pipe(res);
+//  });
 
 //OTHER ROUTES
 app.get("*", function(req, res){
